@@ -7,7 +7,7 @@ class ApiUrl {
   static const String createTransaksi = baseUrl + '/transaksi';
 
   static String updateTransaksi(int id) {
-    return baseUrl + '/transaksi/' + id.toString() + '/update';
+    return baseUrl + '/transaksi/' + id.toString() + '/ubah';
   }
 
   static String showTransaksi(int id) {

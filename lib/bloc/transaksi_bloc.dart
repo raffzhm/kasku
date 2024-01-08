@@ -26,7 +26,7 @@ class TransaksiBloc {
       "nama_transaksi": transaksi.namaTransaksi,
       "nominal": transaksi.nominalTransaksi.toString()
     };
-
+    print("Body : $body");
     var response = await Api().post(apiUrl, body);
     var jsonObj = json.decode(response.body);
     return jsonObj['status'];
