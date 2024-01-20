@@ -169,13 +169,15 @@ class _TransaksiFormState extends State<TransaksiForm> {
     updateTransaksi.nominalTransaksi = int.parse(_nominalTransaksiTextboxController.text);
     TransaksiBloc.updateTransaksi(transaksi: updateTransaksi).then((value) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => const TransaksiPage()));
+        builder: (BuildContext context) => const TransaksiPage(),
+      ));
     }, onError: (error) {
       showDialog(
-          context: context,
-          builder: (BuildContext context) => const WarningDialog(
-            description: "Permintaan ubah data gagal, silahkan coba lagi",
-          ));
+        context: context,
+        builder: (BuildContext context) => const WarningDialog(
+          description: "Permintaan ubah data gagal, silahkan coba lagi",
+        ),
+      );
     });
     setState(() {
       _isLoading = false;

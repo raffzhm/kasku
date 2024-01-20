@@ -8,7 +8,7 @@ class Transaksi {
 
   factory Transaksi.fromJson(Map<String, dynamic> obj) {
     return Transaksi(
-        id: obj['id'],
+        id: int.tryParse(obj['id'].toString()),
         kodeTransaksi: obj['kode_transaksi'],
         namaTransaksi: obj['nama_transaksi'],
       nominalTransaksi: int.tryParse(obj['nominal'].toString()), // Safely parse to int

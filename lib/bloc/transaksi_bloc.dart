@@ -26,29 +26,25 @@ class TransaksiBloc {
       "nama_transaksi": transaksi.namaTransaksi,
       "nominal": transaksi.nominalTransaksi.toString()
     };
-    print("Body : $body");
     var response = await Api().post(apiUrl, body);
     var jsonObj = json.decode(response.body);
     return jsonObj['status'];
   }
 
   static Future<bool> updateTransaksi({required Transaksi transaksi}) async {
-    String apiUrl = ApiUrl.updateTransaksi(transaksi.id!);
-
+    Uri apiUrl = Uri.parse(ApiUrl.updateTransaksi(transaksi.id!));
     var body = {
       "kode_transaksi": transaksi.kodeTransaksi,
       "nama_transaksi": transaksi.namaTransaksi,
       "nominal": transaksi.nominalTransaksi.toString()
     };
-    print("Body : $body");
-    var response = await Api().post(apiUrl, body);
+    var response = await Api().put(apiUrl, body);
     var jsonObj = json.decode(response.body);
     return jsonObj['data'];
   }
 
   static Future<bool> deleteTransaksi({int? id}) async {
-    String apiUrl = ApiUrl.deleteTransaksi(id!);
-
+    Uri apiUrl = Uri.parse(ApiUrl.deleteTransaksi(id!));
     var response = await Api().delete(apiUrl);
     var jsonObj = json.decode(response.body);
     return (jsonObj as Map<String, dynamic>)['data'];

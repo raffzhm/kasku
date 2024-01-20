@@ -42,7 +42,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
               onTap: () async {
                 await LogoutBloc.logout().then((value) => {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()))
+                      MaterialPageRoute(builder: (context) => const LoginPage()))
                 });
               },
             )
