@@ -6,104 +6,131 @@ import 'package:keuanganpribadi/ui/transaksi_page.dart';
 import 'package:keuanganpribadi/widget/warning_dialog.dart';
 
 class TransaksiDetail extends StatefulWidget {
-  Transaksi?  transaksi;
+  final Transaksi? transaksi;
 
   TransaksiDetail({Key? key, this.transaksi}) : super(key: key);
 
   @override
   _TransaksiDetailState createState() => _TransaksiDetailState();
-
 }
 
 class _TransaksiDetailState extends State<TransaksiDetail> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Transaksi'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Colors.blue,
+                Colors.green,
+              ],
+            ),
+          ),
+        ),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Kode : ${widget.transaksi!.kodeTransaksi}",
-              style: const TextStyle(fontSize: 20.0),
+            _buildDetailRow("Kode", widget.transaksi!.kodeTransaksi ?? ""),
+            _buildDetailRow("Nama", widget.transaksi!.namaTransaksi ?? ""),
+            _buildDetailRow(
+              "Nominal",
+              "Rp. ${widget.transaksi!.nominalTransaksi.toString()}",
             ),
-            Text(
-              "Nama : ${widget.transaksi!.namaTransaksi}",
-              style: const TextStyle(fontSize: 18.0),
-            ),
-            Text(
-              "Nominal : Rp. ${widget.transaksi!.nominalTransaksi.toString()}",
-              style: const TextStyle(fontSize: 18.0),
-            ),
-            _tombolHapusEdit()
+            const SizedBox(height: 20),
+            _buildActionButtons(),
           ],
         ),
       ),
     );
   }
 
-  Widget _tombolHapusEdit() {
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 18.0),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        //Tombol Edit
-        OutlinedButton(
-            child: const Text("EDIT"),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TransaksiForm(
-                        transaksi: widget.transaksi,
-                      )));
-            }),
-        //Tombol Hapus
-        OutlinedButton(
-            child: const Text("DELETE"), onPressed: () => confirmHapus()),
-      ],
-    );
-  }
-
-  void confirmHapus() {
-    AlertDialog alertDialog = AlertDialog(
-      content: const Text("Yakin ingin menghapus data ini?"),
-      actions: [
-        //tombol hapus
-        OutlinedButton(
-          child: const Text("Ya"),
+        ElevatedButton(
           onPressed: () {
-            int transaksiId = widget.transaksi!.id!;
-            hapus(transaksiId);
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TransaksiForm(
+                  transaksi: widget.transaksi,
+                ),
+              ),
+            );
           },
+          child: const Text("Edit"),
         ),
-        //tombol batal
-        OutlinedButton(
-          child: const Text("Batal"),
-          onPressed: () => Navigator.pop(context),
-        )
+        ElevatedButton(
+          onPressed: () => _showDeleteConfirmationDialog(),
+          style: ElevatedButton.styleFrom(primary: Colors.red),
+          child: const Text("Delete"),
+        ),
       ],
     );
-
-
-    showDialog(builder: (context) => alertDialog, context: context);
   }
 
-  hapus(int id) {
+  void _showDeleteConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text("Yakin ingin menghapus data ini?"),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              int transaksiId = widget.transaksi!.id!;
+              hapus(transaksiId);
+              Navigator.pop(context);
+            },
+            child: const Text("Ya"),
+            style: ElevatedButton.styleFrom(primary: Colors.red),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Batal"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void hapus(int id) {
     TransaksiBloc.deleteTransaksi(id: id).then((bool success) {
-
       if (success) {
-        // Jika penghapusan berhasil, bisa tambahkan logika atau tindakan lainnya
-        print("Transaksi berhasil dihapus");
-
-        // Contoh: Navigasi ke halaman lain setelah penghapusan
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const TransaksiPage()));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const TransaksiPage(),
+          ),
+        );
       } else {
-        // Jika penghapusan gagal, tampilkan pesan kesalahan
         showDialog(
           context: context,
           builder: (BuildContext context) => const WarningDialog(
@@ -113,5 +140,4 @@ class _TransaksiDetailState extends State<TransaksiDetail> {
       }
     });
   }
-
 }

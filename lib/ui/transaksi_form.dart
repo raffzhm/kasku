@@ -162,12 +162,12 @@ class _TransaksiFormState extends State<TransaksiForm> {
     setState(() {
       _isLoading = true;
     });
-    Transaksi updateTransaksi = Transaksi(id: null);
-    updateTransaksi.id = widget.transaksi!.id;
-    updateTransaksi.kodeTransaksi = _kodeTransaksiTextboxController.text;
-    updateTransaksi.namaTransaksi = _namaTransaksiTextboxController.text;
-    updateTransaksi.nominalTransaksi = int.parse(_nominalTransaksiTextboxController.text);
-    TransaksiBloc.updateTransaksi(transaksi: updateTransaksi).then((value) {
+    Transaksi ubahTransaksi = Transaksi(id: null);
+    ubahTransaksi.id = widget.transaksi!.id;
+    ubahTransaksi.kodeTransaksi = _kodeTransaksiTextboxController.text;
+    ubahTransaksi.namaTransaksi = _namaTransaksiTextboxController.text;
+    ubahTransaksi.nominalTransaksi = int.parse(_nominalTransaksiTextboxController.text);
+    TransaksiBloc.updateTransaksi(transaksi: ubahTransaksi).then((value) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => const TransaksiPage(),
       ));
@@ -183,4 +183,5 @@ class _TransaksiFormState extends State<TransaksiForm> {
       _isLoading = false;
     });
   }
+
 }

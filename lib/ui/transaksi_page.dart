@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:keuanganpribadi/model/transaksi.dart';
 import 'package:keuanganpribadi/ui/transaksi_detail.dart';
 import 'package:keuanganpribadi/ui/transaksi_form.dart';
+import 'package:keuanganpribadi/ui/login_page.dart'; // Ganti path ke file LoginPage
 
 import '../bloc/logout_bloc.dart';
 import '../bloc/transaksi_bloc.dart';
-import 'login_page.dart';
-
 
 class TransaksiPage extends StatefulWidget {
   const TransaksiPage({Key? key}) : super(key: key);
@@ -23,15 +22,32 @@ class _TransaksiPageState extends State<TransaksiPage> {
         title: const Text('List Transaksi Keuangan'),
         actions: [
           Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                child: const Icon(Icons.add, size: 26.0),
-                onTap: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TransaksiForm()));
-                },
-              ))
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              child: const Icon(Icons.add, size: 26.0),
+              onTap: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TransaksiForm(),
+                  ),
+                );
+              },
+            ),
+          )
         ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Colors.blue.shade900, // Warna biru gelap
+                Colors.blue.shade800, // Warna biru lebih gelap
+              ],
+            ),
+          ),
+        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -41,8 +57,12 @@ class _TransaksiPageState extends State<TransaksiPage> {
               trailing: const Icon(Icons.logout),
               onTap: () async {
                 await LogoutBloc.logout().then((value) => {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()))
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  )
                 });
               },
             )
@@ -93,11 +113,13 @@ class ItemTransaksi extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => TransaksiDetail(
-                  transaksi: transaksi,
-                )));
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransaksiDetail(
+              transaksi: transaksi,
+            ),
+          ),
+        );
       },
       child: Card(
         child: ListTile(

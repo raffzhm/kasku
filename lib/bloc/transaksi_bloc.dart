@@ -31,17 +31,21 @@ class TransaksiBloc {
     return jsonObj['status'];
   }
 
-  static Future<bool> updateTransaksi({required Transaksi transaksi}) async {
-    Uri apiUrl = Uri.parse(ApiUrl.updateTransaksi(transaksi.id!));
+  static Future updateTransaksi({required Transaksi transaksi}) async {
+    String apiUrl = ApiUrl.updateTransaksi(transaksi.id!);
     var body = {
       "kode_transaksi": transaksi.kodeTransaksi,
       "nama_transaksi": transaksi.namaTransaksi,
       "nominal": transaksi.nominalTransaksi.toString()
     };
+    print("cek $body ");
     var response = await Api().put(apiUrl, body);
     var jsonObj = json.decode(response.body);
+    print(response.body);  // Add this line to log the API response
     return jsonObj['data'];
   }
+
+
 
   static Future<bool> deleteTransaksi({int? id}) async {
     Uri apiUrl = Uri.parse(ApiUrl.deleteTransaksi(id!));
