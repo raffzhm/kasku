@@ -1,8 +1,13 @@
 # keuanganpribadi
 
-A new Flutter project.
+Aplikasi Catatan pengeluaran Pribadi.
+Menggunakan Rest API CI4 XAMPP
 
 ## Getting Started
+
+1. git clone
+2. lalu ubah nama folder dari kasku menjadi keuanganpribadi
+3. lalu jalankan flutter pub get di terminal
 
 This project is a starting point for a Flutter application.
 
