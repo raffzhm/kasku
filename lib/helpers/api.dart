@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -9,15 +10,20 @@ class Api {
     var token = await UserInfo().getToken();
     var responseJson;
     try {
-      final response = await http.post(Uri.parse(url),
-          body: data,
-          headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+      print("POST request to $url with data: $data");
+      final response = await http.post(
+        Uri.parse(url),
+        body: data,
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+      print("POST response: ${response.body}");
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }
     return responseJson;
   }
+
 
   Future<dynamic> get(dynamic url) async {
     var token = await UserInfo().getToken();
@@ -49,9 +55,13 @@ class Api {
     var token = await UserInfo().getToken();
     var responseJson;
     try {
-      final response = await http.put(Uri.parse(url),
-          body: data,
-          headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+      print("PUT request to $url with data: $data");
+      final response = await http.put(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json',HttpHeaders.authorizationHeader: "Bearer $token"},
+      );
+      print("PUT response: ${response.body}");
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
