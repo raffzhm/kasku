@@ -15,74 +15,89 @@ class TransaksiPage extends StatefulWidget {
 }
 
 class _TransaksiPageState extends State<TransaksiPage> {
+  int _backButtonPressCount = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('List Transaksi Keuangan'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: const Icon(Icons.add, size: 26.0),
-              onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TransaksiForm(),
-                  ),
-                );
-              },
+    return WillPopScope(
+        onWillPop: () async {
+          // If backButtonPressCount is less than 2, increment it and return false
+          if (_backButtonPressCount < 2) {
+            setState(() {
+              _backButtonPressCount++;
+            });
+            return Future.value(false);
+          } else {
+            // If backButtonPressCount is 2 or more, exit the app
+            return Future.value(true);
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('List Transaksi Keuangan'),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  child: const Icon(Icons.add, size: 26.0),
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TransaksiForm(),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.blue.shade900, // Warna biru gelap
+                    Colors.blue.shade800, // Warna biru lebih gelap
+                  ],
+                ),
+              ),
             ),
-          )
-        ],
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Colors.blue.shade900, // Warna biru gelap
-                Colors.blue.shade800, // Warna biru lebih gelap
+          ),
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                ListTile(
+                  title: const Text('Logout'),
+                  trailing: const Icon(Icons.logout),
+                  onTap: () async {
+                    await LogoutBloc.logout().then((value) => {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          )
+                        });
+                  },
+                )
               ],
             ),
           ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              title: const Text('Logout'),
-              trailing: const Icon(Icons.logout),
-              onTap: () async {
-                await LogoutBloc.logout().then((value) => {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                  )
-                });
-              },
-            )
-          ],
-        ),
-      ),
-      body: FutureBuilder<List>(
-        future: TransaksiBloc.getTransaksis(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
-          return snapshot.hasData
-              ? ListTransaksi(
-            list: snapshot.data,
-          )
-              : const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
+          body: FutureBuilder<List>(
+            future: TransaksiBloc.getTransaksis(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) print(snapshot.error);
+              return snapshot.hasData
+                  ? ListTransaksi(
+                      list: snapshot.data,
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    );
+            },
+          ),
+        ));
   }
 }
 
@@ -124,7 +139,7 @@ class ItemTransaksi extends StatelessWidget {
       child: Card(
         child: ListTile(
           title: Text(transaksi.namaTransaksi!),
-          subtitle: Text(transaksi.nominalTransaksi.toString()),
+          subtitle: Text("Rp "+transaksi.nominalTransaksi.toString()),
         ),
       ),
     );
