@@ -7,7 +7,8 @@ Menggunakan Rest API CI4 XAMPP
 
 1. git clone
 2. lalu ubah nama folder dari kasku menjadi keuanganpribadi
-3. lalu jalankan flutter pub get di terminal
+3. run "flutter clean"
+4. lalu jalankan "flutter pub get" di terminal
 
 
 A few resources to get you started if this is your first Flutter project:
