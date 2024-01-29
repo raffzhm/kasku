@@ -6,8 +6,7 @@ Menggunakan Rest API CI4 XAMPP
 ## Getting Started
 
 1. git clone
-2. run "flutter clean"
-3. lalu jalankan "flutter pub get" di terminal
+2. lalu jalankan "flutter pub get" di terminal
 
 
 A few resources to get you started if this is your first Flutter project:
