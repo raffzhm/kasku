@@ -8,7 +8,7 @@ import 'package:keuanganpribadi/widget/warning_dialog.dart';
 class TransaksiDetail extends StatefulWidget {
   final Transaksi? transaksi;
 
-  TransaksiDetail({Key? key, this.transaksi}) : super(key: key);
+  const TransaksiDetail({Key? key, this.transaksi}) : super(key: key);
 
   @override
   _TransaksiDetailState createState() => _TransaksiDetailState();
@@ -21,7 +21,7 @@ class _TransaksiDetailState extends State<TransaksiDetail> {
       appBar: AppBar(
         title: const Text('Detail Transaksi'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -91,7 +91,7 @@ class _TransaksiDetailState extends State<TransaksiDetail> {
         ),
         ElevatedButton(
           onPressed: () => _showDeleteConfirmationDialog(),
-          style: ElevatedButton.styleFrom(primary: Colors.red),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: const Text("Delete"),
         ),
       ],
@@ -110,8 +110,8 @@ class _TransaksiDetailState extends State<TransaksiDetail> {
               hapus(transaksiId);
               Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text("Ya"),
-            style: ElevatedButton.styleFrom(primary: Colors.red),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
